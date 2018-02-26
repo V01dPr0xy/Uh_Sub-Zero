@@ -4,44 +4,49 @@ var exp = require('express'),
    es = require('express-session'),
    path = require('path');
 
-app.get('/', function(req, res){
+function add(num) { return num++; }
+function sub(num) { return num--; }
+
+var compiledEdit = pug.compileFile('edit.pug');
+
+app.get('/', function (req, res) {
    res.render('home', {
-      "title" : "Home"
+      "title": "Home"
    });
 });
 
-app.get('/admin', function(req, res){
+app.get('/admin', function (req, res) {
    res.render('admin', {
-      "title" : ""
+      "title": "Admin"
    });
 });
 
-app.get('/login', function(req, res){
+app.get('/login', function (req, res) {
    res.render('login', {
-      "title" : ""
+      "title": "Login"
    });
 });
 
-app.get('/board', function(req, res){
+app.get('/board', function (req, res) {
    res.render('board', {
-      "title" : ""
+      "title": "Board"
    });
 });
 
-app.get('/topics', function(req, res){
+app.get('/topics', function (req, res) {
    res.render('topics', {
-      "title" : ""
+      "title": "Topics"
    });
 });
 
-app.get('/edit', function(req, res){
-   res.render('edit', {
-      "title" : ""
+app.get('/edit', function (req, res) {
+   res.send(compiledEdit)({
+      "title": "Edit a User"
    });
 });
 
-app.get('/register', function(req, res){
+app.get('/register', function (req, res) {
    res.render('edit', {
-      "title" : ""
+      "title": "Register a User"
    });
 });
