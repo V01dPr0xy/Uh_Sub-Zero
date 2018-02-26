@@ -2,12 +2,27 @@ var exp = require('express'),
    pug = require('pug'),
    bp = require('body-parser'),
    es = require('express-session'),
-   path = require('path');
+   path = require('path'),
+   app = express();
+
+var urlep = bp.urlencoded({
+   extended: true
+})
+
+var mdb = mongoose.connection;
+mdb.on('error', console.error.bind(console, 'connection error:'));
+mdb.once('open', function (callback) { });
+
+var userSchema = mongoose.Schema({
+
+});
+
+var User = mongoose.model('Users_Collection', userSchema);
 
 function add(num) { return num++; }
 function sub(num) { return num--; }
 
-var compiledEdit = pug.compileFile('edit.pug');
+var compiledEdit = pug.compileFile('views/edit.pug');
 
 app.get('/', function (req, res) {
    res.render('home', {
@@ -50,3 +65,14 @@ app.get('/register', function (req, res) {
       "title": "Register a User"
    });
 });
+
+app.post('/edit', urlep, function (req, res) {
+
+});
+
+app.post('/register', urlep, function (req, res) {
+
+});
+
+
+app.listen(3000);
