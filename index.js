@@ -3,11 +3,15 @@ var exp = require('express'),
    bp = require('body-parser'),
    es = require('express-session'),
    path = require('path'),
-   app = express();
+   app = exp();
 
 var urlep = bp.urlencoded({
    extended: true
 })
+
+app.set('view engine', 'pug');
+app.set('views', __dirname + '/views');
+app.use(express.static(path.join(__dirname + '/public')));
 
 var mdb = mongoose.connection;
 mdb.on('error', console.error.bind(console, 'connection error:'));
@@ -23,6 +27,10 @@ function add(num) { return num++; }
 function sub(num) { return num--; }
 
 var compiledEdit = pug.compileFile('views/edit.pug');
+console.log(compiledEdit());
+var fileString = "" + compiledEdit();
+console.log(fileString);
+
 
 app.get('/', function (req, res) {
    res.render('home', {
@@ -55,9 +63,13 @@ app.get('/topics', function (req, res) {
 });
 
 app.get('/edit', function (req, res) {
-   res.send(compiledEdit)({
+   res.writeHead(200, {
+       'Content-Type': 'text/html'
+   });
+   res.write(compiledEdit)({
       "title": "Edit a User"
    });
+   res.end();
 });
 
 app.get('/register', function (req, res) {

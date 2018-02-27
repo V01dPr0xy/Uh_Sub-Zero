@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    title Edit
+  body
+    h3 Name Entry
+    form(id='form', method='post', action='/')
+      label Username:
+      br
+      input(type='text', name='username')
+      br
+      label Password:
+      br
+      input(type='text', name='password')
+      br
+      label Avatar:
+       - var eye_value = 0;
+       - var nose_value = 0;
+       - var mouth_value = 0;
+      br
+      ul(style='list-style-type:none')
+        li
+          button(type='button', name='eyes', value='eyes', onClick=addEyeVal) +
+        li
+          button(type='button', name='nose', value='nose') +
+        li
+          button(type='button', name='mouth', value='mouth') +
+        li
+          button(type='button', name='color', value='color') +
+      br
+      img(src="https://api.adorable.io/avatars/face/eyes" + eye_value + "/nose" + nose_value + "/mouth" + mouth_value + "/f00", height="100" width="100")
+      br
+      label User-Level:
+      br
+      input(type='text', name='user_level')
+      br
+      label Email:
+      br
+      input(type='text', name='email')
+      br
+      label Age:
+      br
+      input(type='text', name='age')
+      br
+      input(type='submit', value='submit')
