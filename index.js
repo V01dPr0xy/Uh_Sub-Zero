@@ -10,24 +10,21 @@ var urlep = bp.urlencoded({
    extended: true
 });
 
-// app.set('view engine', 'pug');
-// app.set('views', __dirname+'/views');
-// app.use(exp.static(path.join(__dirname+'/public')));
+app.set('view engine', 'pug');
+app.set('views', __dirname+'/views');
+app.use(exp.static(path.join(__dirname+'/public')));
 
-// goose.Promise = global.Promise;
-// goose.connect('mongodb://localhost/data');
+goose.Promise = global.Promise;
+goose.connect('mongodb://localhost/data');
 
-// app.set('view engine', 'pug');
-// app.set('views', __dirname + '/views');
-// app.use(exp.static(path.join(__dirname + '/public')));
 
-// var mdb = goose.connection;
-// mdb.on('error', console.error.bind(console, 'connection error:'));
-// mdb.once('open', function (callback) { });
+var mdb = goose.connection;
+mdb.on('error', console.error.bind(console, 'connection error:'));
+mdb.once('open', function (callback) { });
 
-// var userSchema = goose.Schema({
+var userSchema = goose.Schema({
 
-// });
+});
 
 var User = goose.model('Users_Collection', userSchema);
 
