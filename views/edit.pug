@@ -14,21 +14,28 @@ html
       input(type='text', name='password')
       br
       label Avatar:
-       - var eye_value = 0;
-       - var nose_value = 0;
-       - var mouth_value = 0;
       br
       ul(style='list-style-type:none')
         li
-          button(type='button', name='eyes', value='eyes', onClick=addEyeVal) +
+          button(type='button', value='eyes', id='EYESADD') +
         li
-          button(type='button', name='nose', value='nose') +
+          button(type='button', value='nose', id='NOSEADD') +
         li
-          button(type='button', name='mouth', value='mouth') +
+          button(type='button', value='mouth', id='MOUTHADD') +
         li
-          button(type='button', name='color', value='color') +
+          button(type='button', value='color', id='color') +
       br
-      img(src="https://api.adorable.io/avatars/face/eyes" + eye_value + "/nose" + nose_value + "/mouth" + mouth_value + "/f00", height="100" width="100")
+      img(id='avatar', src="https://api.adorable.io/avatars/face/eyesEYEVAL/noseNOSEVAL/mouthMOUTHVAL/f00", height="100" width="100")
+      br
+      ul(style='list-style-type:none')
+        li
+          button(type='button', value='eyes', id='EYESSUB') -
+        li
+          button(type='button', value='nose', id='NOSESUB') -
+        li
+          button(type='button', value='mouth', id='MOUTHSUB') -
+        li
+          button(type='button', value='color', id='color') -
       br
       label User-Level:
       br

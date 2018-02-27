@@ -3,34 +3,36 @@ var exp = require('express'),
    bp = require('body-parser'),
    es = require('express-session'),
    path = require('path'),
+   goose = require('mongoose'),
    app = exp();
 
 var urlep = bp.urlencoded({
    extended: true
-})
-
-app.set('view engine', 'pug');
-app.set('views', __dirname + '/views');
-app.use(express.static(path.join(__dirname + '/public')));
-
-var mdb = mongoose.connection;
-mdb.on('error', console.error.bind(console, 'connection error:'));
-mdb.once('open', function (callback) { });
-
-var userSchema = mongoose.Schema({
-
 });
 
-var User = mongoose.model('Users_Collection', userSchema);
+// app.set('view engine', 'pug');
+// app.set('views', __dirname+'/views');
+// app.use(exp.static(path.join(__dirname+'/public')));
+
+// goose.Promise = global.Promise;
+// goose.connect('mongodb://localhost/data');
+
+// app.set('view engine', 'pug');
+// app.set('views', __dirname + '/views');
+// app.use(exp.static(path.join(__dirname + '/public')));
+
+// var mdb = goose.connection;
+// mdb.on('error', console.error.bind(console, 'connection error:'));
+// mdb.once('open', function (callback) { });
+
+// var userSchema = goose.Schema({
+
+// });
+
+var User = goose.model('Users_Collection', userSchema);
 
 function add(num) { return num++; }
 function sub(num) { return num--; }
-
-var compiledEdit = pug.compileFile('views/edit.pug');
-console.log(compiledEdit());
-var fileString = "" + compiledEdit();
-console.log(fileString);
-
 
 app.get('/', function (req, res) {
    res.render('home', {
@@ -50,26 +52,19 @@ app.get('/login', function (req, res) {
    });
 });
 
-app.get('/board', function (req, res) {
-   res.render('board', {
-      "title": "Board"
-   });
-});
+function interceptor(req, res, next){
+   
+}
 
-app.get('/topics', function (req, res) {
-   res.render('topics', {
-      "title": "Topics"
-   });
-});
+function add(){
+   console.log("I worked");
+}
 
 app.get('/edit', function (req, res) {
-   res.writeHead(200, {
-       'Content-Type': 'text/html'
-   });
-   res.write(compiledEdit)({
-      "title": "Edit a User"
-   });
-   res.end();
+   var didiba = pug.compileFile('views/edit.pug');
+   hahaha = "" + didiba();
+   hahaha = hahaha.replace(/<\/body>/gi, "<script src='mod.js'></script><\/body>");
+   res.send(hahaha);
 });
 
 app.get('/register', function (req, res) {
@@ -85,6 +80,5 @@ app.post('/edit', urlep, function (req, res) {
 app.post('/register', urlep, function (req, res) {
 
 });
-
 
 app.listen(3000);
