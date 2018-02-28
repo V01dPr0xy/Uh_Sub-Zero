@@ -18,6 +18,7 @@
   "homepage": "https://github.com/V01dPr0xy/Uh_Sub-Zero#readme",
   "dependencies": {
     "bcrypt": "^1.0.3",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-session": "^1.15.6",

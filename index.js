@@ -4,7 +4,7 @@ var exp = require('express'),
    es = require('express-session'),
    path = require('path'),
    goose = require('mongoose'),
-   bcrypt = require('bcrypt'),
+   bcrypt = require('bcrypt-nodejs'),
    app = exp(),
    myHash;
 
@@ -48,24 +48,34 @@ app.use(es({
    resave: true
 }));
 
-var checkAuth = function(req, res, next){
-   if(req.session.user && req.session.user.isAuthenticated){
+var loggedIn = false;
+var loginStatus = function (req, res, next) {
+   if (!loggedIn) {
+      res.redirect('/login');
+   } else {
       next();
-   }else{
+   }
+}
+
+var checkAuth = function (req, res, next) {
+   if (req.session.user && req.session.user.isAuthenticated) {
+      next();
+   } else {
       res.redirect('/');
    }
 }
 
-function hash(the_str) {
+function makeHash(the_str) {
    bcrypt.hash(the_str, null, null, function (err, hash) {
       myHash = hash;
+      console.log(myHash);
    });
 }
 
 app.get('/', function (req, res) {
-   res.render('home', {
-      "title": "Home"
-   });
+   var home = pug.compileFile('views/home.pug');
+   homeString = "" + home;
+   homeString = homeString.replace(/<\/body>/gi, "<script src='homeMod.js'></script><\/body>");
 });
 
 app.get('/admin', checkAuth, function (req, res) {
@@ -74,7 +84,7 @@ app.get('/admin', checkAuth, function (req, res) {
    });
 });
 
-app.get('/login', function (req, res) {
+app.get('/login', loginStatus, function (req, res) {
    res.render('login', {
       "title": "Login"
    });
@@ -90,7 +100,7 @@ app.get('/logout', function (req, res) {
    });
 });
 
-app.get('/edit', function (req, res) {
+app.get('/edit', loginStatus, function (req, res) {
    var didiba = pug.compileFile('views/edit.pug');
    hahaha = "" + didiba();
    hahaha = hahaha.replace(/<\/body>/gi, "<script src='mod.js'></script><\/body>");
@@ -116,10 +126,10 @@ app.post('/login_submit', urlep, function (req, res) {
          console.log("users length is zero");
          res.redirect('/login');
       }
-      console.log(users);
-      // bcrypt.compare(users, myHash, function(err, res){
+      console.log(users[0].password);
+      bcrypt.compare(users, myHash, function (err, res) {
 
-      // });
+      });
    })
 });
 
@@ -144,15 +154,16 @@ app.post('/register', urlep, function (req, res) {
    var user = goose.model('User', userSchema);
    user.find({ 'username': req.body.user }, 'username password', function (err, users) {
       if (err) return handleError(err);
+      console.log('hit');
       if (users.count == 0) {
          var benutzer = new User({
             username: req.body.username,
-            password: hash(req.body.password),
+            password: makeHash(req.body.password),
             user_level: req.body.user_level,
             email: req.body.email,
             age: req.body.age
          });
-
+         console.log(benutzer);
          user.create(function (err, user_created) {
             if (err) return console.error(err);
             console.log(req.body.username + ' added.');

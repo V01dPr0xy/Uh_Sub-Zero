@@ -1,1 +1,18 @@
-extends layout
+doctype html
+html
+    head
+        title Login
+    body
+        h3 Login
+        form(id='form', method='post', action='/login_submit')
+            label Username:
+            br
+            input(type='text', name='username')
+            br
+            br
+            label Password:
+            br
+            input(type='password', name='pass', class='')
+            br
+            br
+            input(type='submit', value='submit')
