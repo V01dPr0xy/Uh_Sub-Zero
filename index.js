@@ -13,8 +13,8 @@ var urlep = bp.urlencoded({
 });
 
 app.set('view engine', 'pug');
-app.set('views', __dirname+'/views');
-app.use(exp.static(path.join(__dirname+'/public')));
+app.set('views', __dirname + '/views');
+app.use(exp.static(path.join(__dirname + '/public')));
 
 goose.Promise = global.Promise;
 goose.connect('mongodb://localhost/data');
@@ -42,11 +42,22 @@ var messageSchema = goose.Schema({
 var User = goose.model('Users_Collection', userSchema);
 var Message = goose.model('Messages_Collection', messageSchema);
 
-function add(num) { return num++; }
-function sub(num) { return num--; }
+app.use(es({
+   secret: 'catscatscatsarebest',
+   saveUninitialized: false,
+   resave: true
+}));
 
-function hash(the_str){
-   bcrypt.hash(the_str, null, null, function(err, hash){
+var checkAuth = function(req, res, next){
+   if(req.session.user && req.session.user.isAuthenticated){
+      next();
+   }else{
+      res.redirect('/');
+   }
+}
+
+function hash(the_str) {
+   bcrypt.hash(the_str, null, null, function (err, hash) {
       myHash = hash;
    });
 }
@@ -57,7 +68,7 @@ app.get('/', function (req, res) {
    });
 });
 
-app.get('/admin', function (req, res) {
+app.get('/admin', checkAuth, function (req, res) {
    res.render('admin', {
       "title": "Admin"
    });
@@ -66,6 +77,16 @@ app.get('/admin', function (req, res) {
 app.get('/login', function (req, res) {
    res.render('login', {
       "title": "Login"
+   });
+});
+
+app.get('/logout', function (req, res) {
+   req.session.destroy(function (err) {
+      if (err) {
+         console.log(err);
+      } else {
+         res.redirect('/');
+      }
    });
 });
 
@@ -84,23 +105,23 @@ app.get('/register', function (req, res) {
    res.send(hahaha);
 });
 
-app.post('/login_submit', urlep, function(req, res){
+app.post('/login_submit', urlep, function (req, res) {
    console.log("In login post");
-   User.find({'username': req.body.username}, 'password', function(err, users){
-     if(err){
-       err = "Login failed.";
-       return handleError(err);
-     }
-     if(users.length == 0){
-       console.log("users length is zero");
-       res.redirect('/login');
-     }
-     console.log(users);
-     // bcrypt.compare(users, myHash, function(err, res){
- 
-     // });
+   User.find({ 'username': req.body.username }, 'password', function (err, users) {
+      if (err) {
+         err = "Login failed.";
+         return handleError(err);
+      }
+      if (users.length == 0) {
+         console.log("users length is zero");
+         res.redirect('/login');
+      }
+      console.log(users);
+      // bcrypt.compare(users, myHash, function(err, res){
+
+      // });
    })
- });
+});
 
 app.post('/edit_submit', urlep, function (req, res) {
    var user = new User({
@@ -111,8 +132,8 @@ app.post('/edit_submit', urlep, function (req, res) {
       age: req.body.age
    });
 
-   user.save(function(err, person){
-      if(err) return console.error(err);
+   user.save(function (err, person) {
+      if (err) return console.error(err);
       console.log(req.body.username + " added.");
    })
 
@@ -121,9 +142,9 @@ app.post('/edit_submit', urlep, function (req, res) {
 
 app.post('/register', urlep, function (req, res) {
    var user = goose.model('User', userSchema);
-   user.find({ 'username': req.body.user} , 'username password', function(err, users){
-      if(err) return handleError(err);
-      if(users.count == 0){
+   user.find({ 'username': req.body.user }, 'username password', function (err, users) {
+      if (err) return handleError(err);
+      if (users.count == 0) {
          var benutzer = new User({
             username: req.body.username,
             password: hash(req.body.password),
@@ -132,12 +153,12 @@ app.post('/register', urlep, function (req, res) {
             age: req.body.age
          });
 
-         user.create(function(err, user_created){
-            if(err)return console.error(err);
+         user.create(function (err, user_created) {
+            if (err) return console.error(err);
             console.log(req.body.username + ' added.');
             res.redirect('/');
          })
-      }else{
+      } else {
          res.redirect('/register');
       }
    });
