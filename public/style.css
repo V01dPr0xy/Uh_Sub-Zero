@@ -10,9 +10,22 @@ head{
     background: #fff;
 }
 
+.button {
+    background-color: rgb(20,170,194); /* Green */
+    border: none;
+    color: white;
+    padding: 15px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.button:hover{
+    background: #5cd6e8
+}
 body {
-    margin: 20px auto;
-    max-width: 800px;
+    margin: 20px ;
+    max-width: 900px;
     padding: 20px 20px;
     background-image: url("https://media.discordapp.net/attachments/413722866228527106/414076881936187413/sunset_1.jpg?width=530&height=540");
     background-size: cover;

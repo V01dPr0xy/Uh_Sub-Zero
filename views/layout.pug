@@ -6,13 +6,13 @@ html
   body
     div(class='navbar-menu')
       nav
-        a(id='home', class="navbar-item", href="/") Home
+        a(id='home', class="button", href="/") Home
         if loggedIn
-          a(id='admin', class="navbar-item", href="/admin") Admin
-          a(id='edit', class="navbar-item", href="/edit") Account
+          a(id='admin', class="button", href="/admin") Admin
+          a(id='edit', class="button", href="/edit") Account
         else
-          a(id='login', class="navbar-item", href="/login") Login
-          a(id='register', class="navbar-item", href="/register") Register
+          a(id='login', class="button", href="/login") Login
+          a(id='register', class="button", href="/register") Register
 
 
 
