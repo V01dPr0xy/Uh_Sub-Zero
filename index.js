@@ -65,17 +65,10 @@ var checkAuth = function (req, res, next) {
    }
 }
 
-function makeHash(the_str) {
-   bcrypt.hash(the_str, null, null, function (err, hash) {
-      myHash = hash;
-      console.log(myHash);
-   });
-}
-
 app.get('/', function (req, res) {
-   var home = pug.compileFile('views/home.pug');
-   homeString = "" + home;
-   homeString = homeString.replace(/<\/body>/gi, "<script src='homeMod.js'></script><\/body>");
+   res.render('home', {
+      "title": "Heimat"
+   });
 });
 
 app.get('/admin', checkAuth, function (req, res) {
@@ -84,7 +77,7 @@ app.get('/admin', checkAuth, function (req, res) {
    });
 });
 
-app.get('/login', loginStatus, function (req, res) {
+app.get('/login', function (req, res) {
    res.render('login', {
       "title": "Login"
    });
@@ -101,16 +94,18 @@ app.get('/logout', function (req, res) {
 });
 
 app.get('/edit', loginStatus, function (req, res) {
-   var didiba = pug.compileFile('views/edit.pug');
+   var didiba = pug.compileFile('views/account.pug');
    hahaha = "" + didiba();
    hahaha = hahaha.replace(/<\/body>/gi, "<script src='mod.js'></script><\/body>");
+   hahaha = hahaha.replace(/PAGETYP/gi, "edit");
    res.send(hahaha);
 });
 
 app.get('/register', function (req, res) {
-   var didiba = pug.compileFile('views/edit.pug');
+   var didiba = pug.compileFile('views/account.pug');
    hahaha = "" + didiba();
    hahaha = hahaha.replace(/<\/body>/gi, "<script src='mod.js'></script><\/body>");
+   hahaha = hahaha.replace(/PAGETYP/gi, "register");
    hahaha = hahaha.replace(/<title>Edit/g, '<title>Register');
    res.send(hahaha);
 });
@@ -150,7 +145,7 @@ app.post('/edit_submit', urlep, function (req, res) {
    res.redirect('/');
 });
 
-app.post('/register', urlep, function (req, res) {
+app.post('/register_submit', urlep, function (req, res) {
    var user = goose.model('User', userSchema);
    user.find({ 'username': req.body.user }, 'username password', function (err, users) {
       if (err) return handleError(err);
@@ -158,7 +153,7 @@ app.post('/register', urlep, function (req, res) {
       if (users.count == 0) {
          var benutzer = new User({
             username: req.body.username,
-            password: makeHash(req.body.password),
+            password: bcrypt.hashSync(the_str, null),
             user_level: req.body.user_level,
             email: req.body.email,
             age: req.body.age

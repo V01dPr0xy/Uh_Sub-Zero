@@ -4,8 +4,14 @@ html
     title #{title}
     Link(href='style.css' rel='stylesheet')
   body
+    div(class='navbar-menu')
+      nav
+        label(id='home', class="navbar-item") Home
+        label(id='admin', class="navbar-item") Admin
+        label(id='login', class="navbar-item") Login
+        label(id='edit', class="navbar-item") Account
+        label(id='register', class="navbar-item") Register
     header
-     h1 #{title}
-    div
-      block content
-  footer
+     h1(style="text-align: center;") #{title} 
+block content
+footer

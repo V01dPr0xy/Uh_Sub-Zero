@@ -1,5 +1,5 @@
 var eye_val = 1, nose_val = 1, mouth_val = 1;
-var r_val, g_val, b_val;
+var r_val = "f", g_val = "f", b_val = "f";
 
 function addEyes() {
     eye_val++;
@@ -41,8 +41,9 @@ document.getElementById('B_VALUE').oninput = function () {
 }
 
 function update() {
-    var img = document.getElementById('avatar');
-    img.src = "https://api.adorable.io/avatars/face/eyes" + eye_val + "/nose" + nose_val + "/mouth" + mouth_val + "/" + r_val + g_val + b_val;
+    var rgb = r_val + g_val + b_val;
+    console.log(rgb);
+    document.getElementById('avatar').src = "https://api.adorable.io/avatars/face/eyes" + eye_val + "/nose" + nose_val + "/mouth" + mouth_val + "/" + rgb;
 }
 
 // var doc = document.getElementById('eyes');

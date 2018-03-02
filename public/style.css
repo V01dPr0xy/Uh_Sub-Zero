@@ -6,8 +6,12 @@ html{
     background-color: rgb(129,74,131);
 }
 
+head{
+    background: #fff;
+}
+
 body {
-    margin: 20px ;
+    margin: 20px auto;
     max-width: 800px;
     padding: 20px 20px;
     background-image: url("https://media.discordapp.net/attachments/413722866228527106/414076881936187413/sunset_1.jpg?width=530&height=540");
@@ -26,7 +30,7 @@ input{
     box-sizing: border-box;
 }
 .container {
-    border: 2px solid #fff;
+    border: 2px solid #5cd6e8;
     background-color: #fff;
     border-radius: 5px;
     padding: 10px;
@@ -70,4 +74,24 @@ ul{
 .time-left {
     float: left;
     color: #999;
+}
+
+.navbar-menu{
+    text-align: center;
+    align-content: center;
+    margin: auto;
+    background: #fff;
+}
+
+.navbar-item{
+    list-style-type: none;
+    display: inline;
+    margin: auto 50px;
+    text-align: center;
+}
+
+.image-editor{
+    display: inline;
+    list-style-type: none;
+    margin: auto;
 }
