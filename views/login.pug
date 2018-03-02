@@ -1,18 +1,15 @@
-doctype html
-html
-    head
-        title Login
-    body
-        h3 Login
-        form(id='form', method='post', action='/login_submit')
-            label Username:
-            br
-            input(type='text', name='username')
-            br
-            br
-            label Password:
-            br
-            input(type='password', name='pass')
-            br
-            br
-            input(type='submit', value='submit')
+extends layout
+
+block content
+  form(id='form', method='post', action='/login_submit', style="margin:auto;")
+    label(style="margin:auto;") Username:
+    br
+    input(type='text', name='username', style="margin:auto;")
+    br
+    br
+    label(style="margin:auto;") Password:
+    br
+    input(type='password', name='pass', style="margin:auto;")
+    br
+    br
+    input(type='submit', value='Log In', style="margin:auto;")

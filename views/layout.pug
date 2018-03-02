@@ -6,12 +6,17 @@ html
   body
     div(class='navbar-menu')
       nav
-        label(id='home', class="navbar-item") Home
-        label(id='admin', class="navbar-item") Admin
-        label(id='login', class="navbar-item") Login
-        label(id='edit', class="navbar-item") Account
-        label(id='register', class="navbar-item") Register
+        a(id='home', class="navbar-item", href="/") Home
+        if loggedIn
+          a(id='admin', class="navbar-item", href="/admin") Admin
+          a(id='edit', class="navbar-item", href="/edit") Account
+        else
+          a(id='login', class="navbar-item", href="/login") Login
+          a(id='register', class="navbar-item", href="/register") Register
+
+
+
     header
      h1(style="text-align: center;") #{title} 
-block content
+  block content
 footer

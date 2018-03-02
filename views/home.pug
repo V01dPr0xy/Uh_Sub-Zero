@@ -2,8 +2,11 @@ extends layout
 
 block content
   h2(style="text-align: center;") Welcome to Message Board
-  div
-    
-    input(type='text', name='message_text', style="width: 100%;margin: auto;height: 30px;")
-  div
-  div
+  div(style="display: inline;")
+    if loggedIn
+      input(type='text', name='message_text', style="width: 100%;margin: auto;height: 30px;")
+      input(type='submit', value='Send', style="float: right;")
+    div(id="wrapper" class="scrollbar")
+      div(class="force-overflow")
+        div(style="height: 100%;width: 100%;background: #fff;")
+

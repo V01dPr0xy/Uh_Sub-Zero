@@ -8,6 +8,9 @@ var exp = require('express'),
    app = exp(),
    myHash;
 
+
+var current_user;
+
 var urlep = bp.urlencoded({
    extended: true
 });
@@ -67,7 +70,8 @@ var checkAuth = function (req, res, next) {
 
 app.get('/', function (req, res) {
    res.render('home', {
-      "title": "Heimat"
+      "title": "Heimat",
+      "loggedIn": loggedIn
    });
 });
 
@@ -111,19 +115,21 @@ app.get('/register', function (req, res) {
 });
 
 app.post('/login_submit', urlep, function (req, res) {
-   console.log("In login post");
-   User.find({ 'username': req.body.username }, 'password', function (err, users) {
+   User.find({ 'username': req.body.username }, 'username password', function (err, users) {
       if (err) {
          err = "Login failed.";
          return handleError(err);
       }
       if (users.length == 0) {
-         console.log("users length is zero");
          res.redirect('/login');
       }
-      console.log(users[0].password);
-      bcrypt.compare(users, myHash, function (err, res) {
-
+      bcrypt.compare(users[0].password, current_user.password, function (err, res_) {
+         if(res_ == "true"){
+            loggedIn = true;
+            current_user = users[0];
+         }else{
+            res.redirect('/login');
+         }
       });
    })
 });
@@ -149,19 +155,20 @@ app.post('/register_submit', urlep, function (req, res) {
    var user = goose.model('User', userSchema);
    user.find({ 'username': req.body.user }, 'username password', function (err, users) {
       if (err) return handleError(err);
-      console.log('hit');
-      if (users.count == 0) {
+      if (users.count == undefined) {
          var benutzer = new User({
             username: req.body.username,
-            password: bcrypt.hashSync(the_str, null),
+            password: bcrypt.hashSync(req.body.password, null),
             user_level: req.body.user_level,
             email: req.body.email,
             age: req.body.age
          });
          console.log(benutzer);
-         user.create(function (err, user_created) {
+         user.create(function (err, benutzer) {
             if (err) return console.error(err);
             console.log(req.body.username + ' added.');
+            current_user = benutzer;
+            loggedIn = true;
             res.redirect('/');
          })
       } else {
