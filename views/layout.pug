@@ -9,14 +9,12 @@ html
         a(id='home', class="button", href="/") Home
         if loggedIn
           a(id='admin', class="button", href="/admin") Admin
-          a(id='edit', class="button", href="/edit") Account
+          a(id='logout', class="button", href="/logout") Logout
+          a(id='edit', class="button", href="/edit") #{CURRENTUSERNAME}
         else
           a(id='login', class="button", href="/login") Login
           a(id='register', class="button", href="/register") Register
-
-
-
     header
      h1(style="text-align: center;") #{title} 
-  block content
+    block content
 footer

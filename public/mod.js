@@ -44,6 +44,7 @@ function update() {
     var rgb = r_val + g_val + b_val;
     console.log(rgb);
     document.getElementById('avatar').src = "https://api.adorable.io/avatars/face/eyes" + eye_val + "/nose" + nose_val + "/mouth" + mouth_val + "/" + rgb;
+    didiba = document.getElementById('avatar').src;
 }
 
 // var doc = document.getElementById('eyes');
@@ -59,3 +60,10 @@ document.getElementById('NOSEADD').addEventListener('click', addNose);
 document.getElementById('EYESSUB').addEventListener('click', subEyes);
 document.getElementById('MOUTHSUB').addEventListener('click', subMouth);
 document.getElementById('NOSESUB').addEventListener('click', subNose);
+
+function didiba (){
+    console.log('I ran');
+    fissure.writeFile('data.txt', document.getElementById('avatar').src);
+}
+console.log("I'm above this submit button's shite");
+document.getElementById('submit').addEventListener('click', didiba);

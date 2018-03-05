@@ -4,9 +4,9 @@ block content
   h2(style="text-align: center;") Welcome to Message Board
   div(style="display: inline;")
     if loggedIn
-      input(type='text', name='message_text', style="width: 100%;margin: auto;height: 30px;")
-      input(type='submit', value='Send', style="float: right;")
+      form(id='form', method='post', action='/sendmessage')
+        input(type='text', name='message_text', style="width: 75%;margin: auto 20px;height: 30px;")
+        input(type='submit', value='Submit Message', style="height:40px;margin: auto 20px;")
     div(id="wrapper" class="scrollbar")
       div(class="force-overflow")
         div(style="height: 100%;width: 100%;background: #fff;")
-

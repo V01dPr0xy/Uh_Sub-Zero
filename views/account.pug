@@ -3,7 +3,7 @@ extends layout
 block content
   div(class='navbar-menu')
     nav
-      div(class='image-editor')
+      form(id='form', method='post', action='/PAGETYP_submit')
         ul(style='list-style-type:none')
           li
             button(type='button', value='eyes', id='EYESADD') +
@@ -11,17 +11,15 @@ block content
             button(type='button', value='nose', id='NOSEADD') +
           li
             button(type='button', value='mouth', id='MOUTHADD') +
-      div(class='image-editor')
         label Avatar:
         br
-        img(id='avatar', name='avatar', src="https://api.adorable.io/avatars/face/eyesEYEVAL/noseNOSEVAL/mouthMOUTHVAL/000", value=src, height="100" width="100")
+        input(type='image', id='avatar', name='avatar', src="https://api.adorable.io/avatars/face/eyesEYEVAL/noseNOSEVAL/mouthMOUTHVAL/000")
         br
         input(type='range', value='0', id='R_VALUE', min='0', max='15', step="1")
-        br
+        br    
         input(type='range', value='0', id='G_VALUE', min='0', max='15', step="1")
         br
         input(type='range', value='0', id='B_VALUE', min='0', max='15', step="1")
-      div(class='image-editor')
         ul(style='list-style-type:none')
           li
             button(type='button', value='eyes', id='EYESSUB') -
@@ -29,24 +27,21 @@ block content
             button(type='button', value='nose', id='NOSESUB') -
           li
             button(type='button', value='mouth', id='MOUTHSUB') -
-      div(class='image-editor')
-        form(id='form', method='post', action='/PAGETYP_submit')
-          label Username:
-          input(type='text', name='username')
-          label Password:
-          input(type='text', name='password')
-          label User-Level:
-          select(type='dropbox', name='user_level', value='user_level_val')
-            option(value='user', type='text') User
-            option(value='admin', type='text') Admin
-          br
-          label Email:
-          br
-          input(type='text', name='email')
-          br
-          label Age:
-          br
-          input(type='text', name='age')
-          br
-          input(type='submit', value='Finish!', id='submit')
-  
+        label Username:
+        input(type='text', name='username')
+        label Password:
+        input(type='text', name='password')
+        label User-Level:
+        select(type='dropbox', name='user_level', value='user_level_val')
+          option(value='user', type='text') User
+          option(value='admin', type='text') Admin
+        br
+        label Email:
+        br
+        input(type='text', name='email')
+        br
+        label Age:
+        br
+        input(type='text', name='age')
+        br
+        input(type='submit', id='submit', value='Finish!')
