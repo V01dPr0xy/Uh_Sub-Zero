@@ -1,2 +1,21 @@
 extends layout
 
+block content
+   table(class='gridtable')
+      tr
+         th 
+         th Username
+         th User-Level
+         th Email
+         th Age
+         th
+      each i in users
+         tr
+            td 
+               image(src='#{i.image}')
+            td #{i.username}
+            td #{i.user_level}
+            td #{i.email}
+            td #{i.age}
+            td
+               a(href='/details/'+i.id) Details

@@ -3,30 +3,33 @@ extends layout
 block content
   div(class='navbar-menu')
     nav
-      form(id='form', method='post', action='/PAGETYP_submit')
-        ul(style='list-style-type:none')
-          li
-            button(type='button', value='eyes', id='EYESADD') +
-          li
-            button(type='button', value='nose', id='NOSEADD') +
-          li
-            button(type='button', value='mouth', id='MOUTHADD') +
-        label Avatar:
-        br
-        input(type='image', id='avatar', name='avatar', src="https://api.adorable.io/avatars/face/eyesEYEVAL/noseNOSEVAL/mouthMOUTHVAL/000")
-        br
-        input(type='range', value='0', id='R_VALUE', min='0', max='15', step="1")
-        br    
-        input(type='range', value='0', id='G_VALUE', min='0', max='15', step="1")
-        br
-        input(type='range', value='0', id='B_VALUE', min='0', max='15', step="1")
-        ul(style='list-style-type:none')
-          li
-            button(type='button', value='eyes', id='EYESSUB') -
-          li
-            button(type='button', value='nose', id='NOSESUB') -
-          li
-            button(type='button', value='mouth', id='MOUTHSUB') -
+      form(id='form', class='innerContainer' , method='post', action='/PAGETYP_submit')
+        div(class='container')
+          div(class='innerContainer')
+            ul(style='list-style-type:none')
+              li
+                button(type='button', value='eyes', id='EYESADD') +
+              li
+                button(type='button', value='nose', id='NOSEADD') +
+              li
+                button(type='button', value='mouth', id='MOUTHADD') +
+          div(class='innerContainer')
+            label Avatar:
+            input(type='image', id='avatar', name='avatar', height="250", width="250", src="https://api.adorable.io/avatars/face/eyesEYEVAL/noseNOSEVAL/mouthMOUTHVAL/000")
+            input(type='hidden', name='eyes', id='eyes', value='1')
+            input(type='range', value='0', name='R_VALUE', id='R_VALUE', min='0', max='15', step="1")
+            input(type='hidden', name='nose', id='nose', value='1')
+            input(type='range', value='0', name='G_VALUE', id='G_VALUE', min='0', max='15', step="1")
+            input(type='hidden', name='mouth', id='mouth', value='1')
+            input(type='range', value='0', name='B_VALUE', id='B_VALUE', min='0', max='15', step="1")
+          div(class='innerContainer')
+            ul(style='list-style-type:none')
+              li
+                button(type='button', value='eyes', id='EYESSUB') -
+              li
+                button(type='button', value='nose', id='NOSESUB') -
+              li
+                button(type='button', value='mouth', id='MOUTHSUB') -
         label Username:
         input(type='text', name='username')
         label Password:

@@ -3,10 +3,20 @@ extends layout
 block content
   h2(style="text-align: center;") Welcome to Message Board
   div(style="display: inline;")
-    if loggedIn
-      form(id='form', method='post', action='/sendmessage')
+    if user != undefined
+      form(id='form', method='post', action='/sendmessage/'+ user.id)
         input(type='text', name='message_text', style="width: 75%;margin: auto 20px;height: 30px;")
         input(type='submit', value='Submit Message', style="height:40px;margin: auto 20px;")
-    div(id="wrapper" class="scrollbar")
-      div(class="force-overflow")
-        div(style="height: 100%;width: 100%;background: #fff;")
+        br
+        div(id="wrapper" class="scrollbar")
+          div(class="force-overflow")
+            div(style="height: 100%;width: 100%;background: #fff;")
+              each i in messages
+                div(class='container')
+                  image(src="#{i.image}", alt='hahahah')
+                  p #{i.name}
+                  p #{i.date}
+                  p #{i.text}
+                  if i.name
+                  a(href='/editmessage/' + i.id) Edit
+                  a(href='/deletemessage/'+i.id) Delete

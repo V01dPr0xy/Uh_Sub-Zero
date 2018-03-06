@@ -50,15 +50,6 @@ app.use(es({
    resave: true
 }));
 
-var loggedIn = false, admin = false;
-var loginStatus = function (req, res, next) {
-   if (!loggedIn) {
-      res.redirect('/login');
-   } else {
-      next();
-   }
-}
-
 var checkAuth = function (req, res, next) {
    if (req.session.user && req.session.user.isAuthenticated) {
       next();
@@ -68,9 +59,23 @@ var checkAuth = function (req, res, next) {
 }
 
 app.get('/', function (req, res) {
-   res.render('home', {
-      "title": "Heimat",
-      "loggedIn": loggedIn
+   Message.find(function (err, message) {
+      if (err) return console.error(err);
+      console.log(message);
+      if (req.session.user) {
+         if (req.session.user.isAuthenticated) {
+            res.render('home', {
+               "title": "Home",
+               "messages": message,
+               "user": req.session.user
+            });
+         }
+      } else {
+         res.render('home', {
+            "title": "Home",
+            "messages": message
+         });
+      }
    });
 });
 
@@ -80,24 +85,25 @@ app.get('/admin', checkAuth, function (req, res) {
    });
 });
 
-app.get('/login', function (req, res) {
+app.get('/login/:id', function (req, res) {
    res.render('login', {
       "title": "Login"
    });
 });
+
+
 
 app.get('/logout', function (req, res) {
    req.session.destroy(function (err) {
       if (err) {
          console.log(err);
       } else {
-         loggedIn = false;
          res.redirect('/');
       }
    });
 });
 
-app.get('/edit', loginStatus, function (req, res) {
+app.get('/edit', checkAuth, function (req, res) {
    var didiba = pug.compileFile('views/account.pug');
    hahaha = "" + didiba();
    hahaha = hahaha.replace(/<\/body>/gi, "<script src='mod.js'></script><\/body>");
@@ -111,31 +117,56 @@ app.get('/register', function (req, res) {
    hahaha = hahaha.replace(/<\/body>/gi, "<script src='mod.js'></script><\/body>");
    hahaha = hahaha.replace(/PAGETYP/gi, "register");
    hahaha = hahaha.replace(/<title>/g, '<title>Register');
-   if (current_user != undefined)
-      hahaha = hahaha.replace(/CURRENTUSERNAME/g, current_user.username);
+   hahaha = hahaha.replace(/CURRENTUSERNAME/g, req.session.username);
    res.send(hahaha);
 });
 
-app.post('/login_submit', urlep, function (req, res) {
-   User.find({ 'username': req.body.username }, 'username password', function (err, users) {
+app.post('/login_submit/:id', urlep, function (req, res) {
+   User.findById(req.params.id, function (err, benutzer) {
       if (err) {
          err = "Login failed.";
          return handleError(err);
       }
-      console.log(users);
-      if (users.length == undefined || users.length == 0) {
-         res.redirect('/login');
-      } else {
-         bcrypt.compare(users[0].password, current_user.password, function (err, res_) {
+      if (req.body.username == benutzer.username) {
+         bcrypt.compare(benutzer.password, req.body.password, function (err, res_) {
             if (res_ == "true") {
-               loggedIn = true;
-               current_user = users[0];
-            } else {
-               res.redirect('/login');
+               req.session.user = {
+                  isAuthenticated: true,
+                  username: req.body.username
+               }
             }
+            res.redirect('/');
          });
       }
    })
+});
+
+//Edit Message
+app.get('/editmessage/:id', function (req, res) {
+
+});
+
+app.post('/editmessage/:id', function (req, res) {
+
+});
+
+//Delete Message
+app.get('/deletemessage/:id', function (req, res) {
+
+});
+
+//Detail of User account and messages
+app.get('/details/:id', function (req, res) {
+
+});
+
+app.post('/details/:id', function (req, res) {
+
+});
+
+//Deleting an account
+app.get('deleteaccount/:id', function (req, res) {
+
 });
 
 app.post('/edit_submit', urlep, function (req, res) {
@@ -156,40 +187,47 @@ app.post('/edit_submit', urlep, function (req, res) {
 });
 
 app.post('/register_submit', urlep, function (req, res) {
-   // console.log(req);
-   User.find({ 'username': req.body.user }, 'username', function (err, users) {
+   console.log(req.body);
+   User.findById(req.params.id, function (err, users) {
       if (err) return handleError(err);
-      if (users.count == undefined) {
-         var benutzer = new User({
-            username: req.body.username,
-            password: bcrypt.hashSync(req.body.password, null),
-            user_level: req.body.user_level,
-            email: req.body.email,
-            age: req.body.age
-         });
-         console.log(benutzer);
-         benutzer.save(function (err, benutzer) {
-            if (err) return console.error(err);
-            console.log(req.body.username + ' added.');
-            current_user = benutzer;
-            loggedIn = true;
-            res.redirect('/');
-         })
-      } else {
-         res.redirect('/register');
-      }
+      var benutzer = new User({
+         username: req.body.username,
+         password: bcrypt.hashSync(req.body.password, null),
+         user_level: req.body.user_level,
+         image: "https://api.adorable.io/avatars/face/eyes" + req.body.eyes + "/nose" + req.body.nose + "/mouth" + req.body.mouth + "/" + req.body.R_VALUE + req.body.G_VALUE + req.body.B_VALUE,
+         email: req.body.email,
+         age: req.body.age
+      });
+      console.log(req.body.username + ' added.');
+
+      benutzer.save(function (err, benutzer) {
+         if (err) return console.error(err);
+         req.session.user = {
+            isAuthenticated: true,
+            username: req.body.username
+         }
+         res.redirect('/');
+      })
    });
 });
 
-app.post('/sendmessage', urlep, function (req, res) {
+app.post('/sendmessage/:id', urlep, function (req, res) {
    var time = new Date().getTime();
    var date = new Date(time);
-
-   var message = new Message({
-      name: req.body.name,
-      text: req.body.text,
-      date: date.toDateString()
+   User.findById(req.params.id, function (err, benutzer) {
+      var message = new Message({
+         image: benutzer.image,
+         name: benutzer.username,
+         text: req.body.message_text,
+         date: date.toDateString()
+      });
+      message.save(function (err, message) {
+         if (err) return console.error(err);
+         console.log('Message posted');
+      });
    });
+
+   res.redirect('/');
 });
 
 app.listen(3000);

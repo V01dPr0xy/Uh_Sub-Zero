@@ -1,5 +1,5 @@
 var eye_val = 1, nose_val = 1, mouth_val = 1;
-var r_val = "f", g_val = "f", b_val = "f";
+var r_val = "0", g_val = "0", b_val = "0";
 
 function addEyes() {
     eye_val++;
@@ -41,13 +41,24 @@ document.getElementById('B_VALUE').oninput = function () {
 }
 
 function update() {
+    document.getElementById('nose').value = nose_val;
+
+    document.getElementById('eyes').value = eye_val;
+
+    document.getElementById('mouth').value = mouth_val;
     var rgb = r_val + g_val + b_val;
-    console.log(rgb);
     document.getElementById('avatar').src = "https://api.adorable.io/avatars/face/eyes" + eye_val + "/nose" + nose_val + "/mouth" + mouth_val + "/" + rgb;
-    didiba = document.getElementById('avatar').src;
 }
 
-// var doc = document.getElementById('eyes');
+document.getElementById('Nose').src = document.getElementById('Nose').src
+    .replace(/NOSEVAL/g, nose_val);
+
+document.getElementById('Eyes').src = document.getElementById('Eyes').src
+    .replace(/EYEVAL/g, eye_val);
+
+document.getElementById('Mouth').src = document.getElementById('Mouth').src
+    .replace(/MOUTHVAL/g, mouth_val);
+
 document.getElementById('avatar').src = document.getElementById('avatar').src
     .replace(/NOSEVAL/g, nose_val)
     .replace(/MOUTHVAL/g, mouth_val)
@@ -61,7 +72,7 @@ document.getElementById('EYESSUB').addEventListener('click', subEyes);
 document.getElementById('MOUTHSUB').addEventListener('click', subMouth);
 document.getElementById('NOSESUB').addEventListener('click', subNose);
 
-function didiba (){
+function didiba() {
     console.log('I ran');
     fissure.writeFile('data.txt', document.getElementById('avatar').src);
 }

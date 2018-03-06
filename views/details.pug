@@ -1,0 +1,10 @@
+extends layout
+
+block content
+   p Avatar:
+      image(src='#{user.avatar}')
+   p User Level: #{user.user_level}
+   p Email: #{user.email}
+   p Age: #{user.age}
+   #menu
+      a(href='') Go Back

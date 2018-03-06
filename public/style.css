@@ -44,12 +44,19 @@ input{
     box-sizing: border-box;
 }
 .container {
-    border: 2px solid #5cd6e8;
-    background-color: #fff;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
 }
+
+.innerContainer{
+    flex-direction: column;
+}
+
+/* border: 2px solid #5cd6e8;
+background-color: #fff;
+border-radius: 5px;
+padding: 10px;
+margin: 10px 0; */
 ul{
     display: block;
     width: 60px;
