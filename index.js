@@ -61,7 +61,6 @@ var checkAuth = function (req, res, next) {
 app.get('/', function (req, res) {
    Message.find(function (err, message) {
       if (err) return console.error(err);
-      console.log(message);
       if (req.session.user) {
          if (req.session.user.isAuthenticated) {
             res.render('home', {
@@ -79,13 +78,17 @@ app.get('/', function (req, res) {
    });
 });
 
-app.get('/admin', checkAuth, function (req, res) {
-   res.render('admin', {
-      "title": "Admin"
+app.get('/admin', function (req, res) {
+   User.find(function(err, users){
+      if(err) return console.error(err);
+      res.render('admin', {
+         "title": "Admin",
+         "users": users
+      })
    });
 });
 
-app.get('/login/:id', function (req, res) {
+app.get('/login', function (req, res) {
    res.render('login', {
       "title": "Login"
    });
@@ -121,24 +124,23 @@ app.get('/register', function (req, res) {
    res.send(hahaha);
 });
 
-app.post('/login_submit/:id', urlep, function (req, res) {
-   User.findById(req.params.id, function (err, benutzer) {
-      if (err) {
-         err = "Login failed.";
-         return handleError(err);
-      }
-      if (req.body.username == benutzer.username) {
-         bcrypt.compare(benutzer.password, req.body.password, function (err, res_) {
-            if (res_ == "true") {
-               req.session.user = {
-                  isAuthenticated: true,
-                  username: req.body.username
+app.post('/login_submit', urlep, function (req, res) {
+   User.find(function (err, users) {
+      if (err) return console.error(err);
+      users.forEach(e => {
+         if (e.username == req.body.username) {
+            bcrypt.compare(benutzer.password, req.body.password, function (err, res_) {
+               if (res_ == "true") {
+                  req.session.user = {
+                     isAuthenticated: true,
+                     username: req.body.username
+                  }
                }
-            }
-            res.redirect('/');
-         });
-      }
-   })
+               res.redirect('/');
+            });
+         }
+      });
+   });
 });
 
 //Edit Message
@@ -187,27 +189,38 @@ app.post('/edit_submit', urlep, function (req, res) {
 });
 
 app.post('/register_submit', urlep, function (req, res) {
-   console.log(req.body);
-   User.findById(req.params.id, function (err, users) {
+   User.find(function (err, users) {
       if (err) return handleError(err);
-      var benutzer = new User({
-         username: req.body.username,
-         password: bcrypt.hashSync(req.body.password, null),
-         user_level: req.body.user_level,
-         image: "https://api.adorable.io/avatars/face/eyes" + req.body.eyes + "/nose" + req.body.nose + "/mouth" + req.body.mouth + "/" + req.body.R_VALUE + req.body.G_VALUE + req.body.B_VALUE,
-         email: req.body.email,
-         age: req.body.age
-      });
-      console.log(req.body.username + ' added.');
 
-      benutzer.save(function (err, benutzer) {
-         if (err) return console.error(err);
-         req.session.user = {
-            isAuthenticated: true,
-            username: req.body.username
+      var hasDuplicates = false;
+
+      users.forEach(e => {
+         if (req.body.username == e.username) {
+            console.log('Duplicate Detected');
+            hasDuplicates = true;
          }
-         res.redirect('/');
-      })
+      });
+
+      if (!hasDuplicates) {
+         var benutzer = new User({
+            username: req.body.username,
+            password: bcrypt.hashSync(req.body.password, null),
+            user_level: req.body.user_level,
+            image: "https://api.adorable.io/avatars/face/eyes" + req.body.eyes + "/nose" + req.body.nose + "/mouth" + req.body.mouth + "/" + req.body.R_VALUE + req.body.G_VALUE + req.body.B_VALUE,
+            email: req.body.email,
+            age: req.body.age
+         });
+         console.log(req.body.username + ' added.');
+
+         benutzer.save(function (err, benutzer) {
+            if (err) return console.error(err);
+            req.session.user = {
+               isAuthenticated: true,
+               username: req.body.username
+            }
+         })
+      }
+      res.redirect('/');
    });
 });
 

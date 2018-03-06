@@ -50,15 +50,6 @@ function update() {
     document.getElementById('avatar').src = "https://api.adorable.io/avatars/face/eyes" + eye_val + "/nose" + nose_val + "/mouth" + mouth_val + "/" + rgb;
 }
 
-document.getElementById('Nose').src = document.getElementById('Nose').src
-    .replace(/NOSEVAL/g, nose_val);
-
-document.getElementById('Eyes').src = document.getElementById('Eyes').src
-    .replace(/EYEVAL/g, eye_val);
-
-document.getElementById('Mouth').src = document.getElementById('Mouth').src
-    .replace(/MOUTHVAL/g, mouth_val);
-
 document.getElementById('avatar').src = document.getElementById('avatar').src
     .replace(/NOSEVAL/g, nose_val)
     .replace(/MOUTHVAL/g, mouth_val)
@@ -76,5 +67,4 @@ function didiba() {
     console.log('I ran');
     fissure.writeFile('data.txt', document.getElementById('avatar').src);
 }
-console.log("I'm above this submit button's shite");
 document.getElementById('submit').addEventListener('click', didiba);

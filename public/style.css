@@ -24,9 +24,8 @@ head{
     background: #5cd6e8
 }
 body {
-    margin: auto;
-    height: 100%;
-    max-width: 900px;
+    margin: 20px;
+    height: 100vh;
     padding: 20px 20px;
     background-image: url("https://media.discordapp.net/attachments/413722866228527106/414076881936187413/sunset_1.jpg?width=530&height=540");
     background-size: cover;

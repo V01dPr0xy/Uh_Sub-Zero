@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  form(id='form', method='post', action='/login_submit/'+, style="margin:auto;")
+  form(id='form', method='post', action='/login_submit', style="margin:auto;")
     label(style="margin:auto;") Username:
     br
     input(type='text', name='username', style="margin:auto;")
@@ -10,6 +10,5 @@ block content
     label(style="margin:auto;") Password:
     br
     input(type='password', name='pass', style="margin:auto;")
-    br
     br
     input(type='submit', value='Log In', style="margin:auto;")

@@ -7,10 +7,10 @@ html
     div(class='navbar-menu')
       nav
         a(id='home', class="button", href="/") Home
-        if loggedIn
+        if user
           a(id='admin', class="button", href="/admin") Admin
           a(id='logout', class="button", href="/logout") Logout
-          a(id='edit', class="button", href="/edit") #{CURRENTUSERNAME}
+          a(id='edit', class="button", href="/edit") #{user.username}
         else
           a(id='login', class="button", href="/login") Login
           a(id='register', class="button", href="/register") Register
